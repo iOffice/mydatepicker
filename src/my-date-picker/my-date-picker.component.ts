@@ -105,6 +105,7 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor {
         disableDateRanges: <Array<IMyDateRange>> [],
         disableWeekends: <boolean> false,
         disableWeekdays: <Array<string>> [],
+        hideDisabledWeeks: false,
         showWeekNumbers: <boolean> false,
         height: <string> "34px",
         width: <string> "100%",
@@ -773,7 +774,9 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor {
                 }
             }
             let weekNbr: number = this.opts.showWeekNumbers  && this.opts.firstDayOfWeek === "mo" ? this.utilService.getWeekNumber(week[0].dateObj) : 0;
-            this.dates.push({week: week, weekNbr: weekNbr});
+            if (!this.opts.hideDisabledWeeks || !(week.every(day => day.disabled))) {
+              this.dates.push({week: week, weekNbr: weekNbr});
+            }
         }
 
         this.setHeaderBtnDisabledState(m, y);
